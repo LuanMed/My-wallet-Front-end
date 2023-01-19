@@ -6,8 +6,8 @@ export default function IncomePage() {
     const [description, setDescription] = useState("");
     const [disabled, setDisabled] = useState("");
 
-    function addIncome() {
-
+    function addIncome(e) {
+        e.preventDefault();
     }
 
     return (

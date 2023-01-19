@@ -1,20 +1,36 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components"
+import styled from "styled-components";
+import env from 'react-dotenv';
+import axios from "axios";
+import { UserInfoContext } from "../context/UserInfoContext";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useContext(UserInfoContext);
 
     function login(e) {
         e.preventDefault();
         setDisabled(true);
-
         const body = {email, password};
+        
+        axios.post(`${env.REACT_APP_API_URL}/logged`, body)
+            .then(res => {
+                navigate('/');
+                setDisabled(false);           
+                console.log(res.data);
+                setUserInfo(res.data);
+                navigate('/home');
+            })
+            .catch(err => {
+                setDisabled(false);
+                console.log(err)
+                alert(err.response.data);
+            })
 
-        navigate('/home');
     }
 
     return (

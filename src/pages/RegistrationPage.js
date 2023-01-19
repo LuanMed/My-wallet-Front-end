@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import styled from "styled-components"
+import styled from "styled-components";
+import axios from "axios";
 
 export default function ReginstrationPage() {
     const [name, setName] = useState("");
@@ -13,29 +14,26 @@ export default function ReginstrationPage() {
     function register(e) {
         e.preventDefault();
 
-        if (confirmPassword !== password) return alert("As senhas estão diferentes");
-
         setDisabled(true);
 
-
-
         const body = {
-            name: name,
-            email: email,
-            password: password
+            name,
+            email,
+            password,
+            confirmPassword
         }
 
-        // axios.post(`${BASE_URL}/auth/sign-up`, body)
-        //     .then(res => {
-        //         navigate('/');
-        //         setDisabled(false);
+        axios.post(`${process.env.REACT_APP_API_URL}/users`, body)
+            .then(res => {
+                navigate('/');
+                setDisabled(false);
 
-        //     })
-        //     .catch(err => {
-        //         setDisabled(false);
-        //         alert(err.response.data.message);
-        //     })
-        navigate('/');
+            })
+            .catch(err => {
+                setDisabled(false);
+                console.log(err)
+                alert(err.response.data);
+            })
     }
 
     return (
@@ -74,7 +72,7 @@ export default function ReginstrationPage() {
                 />
                 <label htmlFor="password"></label>
                 <input
-                    id="password"
+                    id="confirmPassword"
                     type="password"
                     placeholder="Confirme a senha"
                     value={confirmPassword}

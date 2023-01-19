@@ -1,11 +1,16 @@
+import { useContext } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { UserInfoContext } from "../context/UserInfoContext"
 
 export default function HomePage() {
+    const [userInfo] = useContext(UserInfoContext);
+    const firstName = userInfo.name.split(' ');
+    
     return (
         <ContainerHome>
             <Header>
-                <h2>Olá, Fulano</h2>
+                <h2>Olá, {firstName[0]}</h2>
                 <Link to={'/'}>
                     <ion-icon name="exit-outline"></ion-icon>
                 </Link>
