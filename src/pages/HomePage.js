@@ -9,6 +9,7 @@ export default function HomePage() {
     const [userInfo] = useContext(UserInfoContext);
     const firstName = userInfo.name?.split(' ');
     const [wallet, setWallet] = useState(undefined);
+    const [finalBalance, setFinalBalance] = useState(0);
 
     const config = {
         headers: {
@@ -20,7 +21,9 @@ export default function HomePage() {
 
         axios.get(`${process.env.REACT_APP_API_URL}/transactions`, config)
             .then(res => {
-                setWallet(res.data);
+                setWallet(res.data.transactions);
+                setFinalBalance(res.data.finalBalance);
+                console.log(res.data)
             })
             .catch(err => {
                 alert(err.response.data)
@@ -36,7 +39,7 @@ export default function HomePage() {
                 </Link>
             </Header>
             <Main>
-                {wallet === undefined ? <ThreeDots color="#A328D6" width="100" /> :
+                {wallet === undefined ? <EmptyText><ThreeDots color="#A328D6" width="100" /></EmptyText> :
                     <>
                         {wallet.length !== 0 ?
                             <>
@@ -44,13 +47,13 @@ export default function HomePage() {
                                     <Wallet>
                                             <Date>{w.date}</Date>
                                             <Title>{w.description}</Title>
-                                            <Amount>{w.amount}</Amount>                                       
+                                            <Amount type={w.type}>{w.amount}</Amount>                                       
                                     </Wallet>
 
                                 )}
                                 <>
                                     <Balance>SALDO</Balance>
-                                    <BalanceValue>2999,99</BalanceValue>
+                                    <BalanceValue value={Number(finalBalance.replace(',','.'))}>{finalBalance}</BalanceValue>
                                 </>
                             </>
                             :
@@ -132,7 +135,7 @@ const Title = styled.div`
 `
 
 const Amount = styled.div`
-    color: #03AC00;
+    color: ${props => props.type === "income" ? "#03AC00" : "#C70000"};
     margin-left: 20px;
     margin-right: 10px;
 `
@@ -150,7 +153,7 @@ const BalanceValue = styled.div`
     right: 12px;
     bottom: 10px;
     font-size: 17px;
-    color: #03AC00;
+    color: ${props => props.value >= 0 ? "#03AC00" : "#C70000"} ;
 `
 
 const EmptyText = styled.p`
