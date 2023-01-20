@@ -17,6 +17,13 @@ export default function HomePage() {
         }
     }
 
+    function deleteEntry (id) {
+        if(!window.confirm("Quer deletar esse lançamento?")) return;
+
+        axios.delete(`${process.env.REACT_APP_API_URL}/transactions/${id}`, config)
+        .then.catch(err => alert(err.response.data))
+    }
+
     useEffect(() => {
 
         axios.get(`${process.env.REACT_APP_API_URL}/transactions`, config)
@@ -28,7 +35,7 @@ export default function HomePage() {
             .catch(err => {
                 alert(err.response.data)
             });
-    }, [])
+    }, [wallet])
 
     return (
         <ContainerHome>
@@ -40,14 +47,15 @@ export default function HomePage() {
             </Header>
             <Main>
                 {wallet === undefined ? <EmptyText><ThreeDots color="#A328D6" width="100" /></EmptyText> :
-                    <>
+                    <ContainerWallet>
                         {wallet.length !== 0 ?
                             <>
                                 {wallet.map(w =>
                                     <Wallet>
                                             <Date>{w.date}</Date>
                                             <Title>{w.description}</Title>
-                                            <Amount type={w.type}>{w.amount}</Amount>                                       
+                                            <Amount type={w.type}>{w.amount}</Amount>
+                                            <DeleteButton onClick={() => (deleteEntry(w._id))}>x</DeleteButton>                                       
                                     </Wallet>
 
                                 )}
@@ -60,7 +68,7 @@ export default function HomePage() {
                             <EmptyText>
                                 Não há registro de <br /> entrada ou saída
                             </EmptyText>}
-                    </>}
+                    </ContainerWallet>}
             </Main>
             <Footer>
                 <Link to={'/nova-entrada'}>
@@ -110,7 +118,17 @@ const Main = styled.main`
     border-radius: 5px;
     background-color: #FFFFFF;
     margin-bottom: 13px;
+    
 `
+
+const ContainerWallet = styled.div`
+    height: 400px;
+    overflow: auto;
+    overflow-x: hidden;
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+` 
 
 const Wallet = styled.div`
     width: 326px;
@@ -137,7 +155,14 @@ const Title = styled.div`
 const Amount = styled.div`
     color: ${props => props.type === "income" ? "#03AC00" : "#C70000"};
     margin-left: 20px;
-    margin-right: 10px;
+    margin-right: 9px;
+`
+
+const DeleteButton = styled.button`
+    color: #C6C6C6;
+    background-color: #FFFFFF;
+    margin-right: 9px;
+    cursor: pointer;
 `
 
 const Balance = styled.div`
