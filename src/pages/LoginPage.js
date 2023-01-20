@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import env from 'react-dotenv';
 import axios from "axios";
 import { UserInfoContext } from "../context/UserInfoContext";
 
@@ -17,7 +16,7 @@ export default function LoginPage() {
         setDisabled(true);
         const body = {email, password};
         
-        axios.post(`${env.REACT_APP_API_URL}/logged`, body)
+        axios.post(`${process.env.REACT_APP_API_URL}/logged`, body)
             .then(res => {
                 navigate('/');
                 setDisabled(false);           

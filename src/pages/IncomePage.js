@@ -1,13 +1,42 @@
-import { useState } from "react"
+import axios from "axios";
+import { useContext, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
+import { UserInfoContext } from "../context/UserInfoContext";
 
 export default function IncomePage() {
     const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
     const [disabled, setDisabled] = useState("");
+    const navigate = useNavigate();
+    const [userInfo] = useContext(UserInfoContext);
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${userInfo.token}`
+        }
+    }
 
     function addIncome(e) {
         e.preventDefault();
+        setDisabled(true);
+        
+        const body = {
+            amount,
+            description,
+            type: "income"
+        }
+
+        axios.post(`${process.env.REACT_APP_API_URL}/transactions`, body, config)
+        .then(res => {
+            navigate('/home');
+            setDisabled(false);
+        })
+        .catch(err => {
+            setDisabled(false);
+            alert(err.response.data);
+        })
+
     }
 
     return (
