@@ -64,7 +64,7 @@ export default function ExpensePage() {
                     required
                     disabled={disabled}
                 />
-                <button disabled={disabled} type="submit" >Salvar entrada</button>
+                <button disabled={disabled} type="submit" >Salvar saída</button>
             </Form>
         </ContainerExpense>
     )

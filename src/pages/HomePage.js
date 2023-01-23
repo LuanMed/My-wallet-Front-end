@@ -19,12 +19,12 @@ export default function HomePage() {
         }
     }
 
-    function deleteEntry (id) {
-        if(!window.confirm("Quer deletar esse lançamento?")) return;
+    function deleteEntry(id) {
+        if (!window.confirm("Quer deletar esse lançamento?")) return;
 
         axios.delete(`${process.env.REACT_APP_API_URL}/transactions/${id}`, config)
-        .then(res => setDeletedCounter([...deletedCounter, 1]))
-        .catch(err => alert(err.response.data))
+            .then(res => setDeletedCounter([...deletedCounter, 1]))
+            .catch(err => alert(err.response.data))
     }
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function HomePage() {
                 setFinalBalance(res.data.finalBalance);
             })
             .catch(err => {
-                alert(err.response.data)
+                alert(err.response)
             });
     }, [deletedCounter])
 
@@ -52,18 +52,17 @@ export default function HomePage() {
                     <ContainerWallet>
                         {wallet.length !== 0 ?
                             <>
-                                {wallet.map(w =>
-                                    <Wallet key={w._id}>
+                                {wallet.map(w =>                                  
+                                        <Wallet key={w._id}>
                                             <Date>{w.date}</Date>
                                             <Title>{w.description}</Title>
                                             <Amount type={w.type}>{w.amount}</Amount>
-                                            <DeleteButton onClick={() => (deleteEntry(w._id))}>x</DeleteButton>                                       
-                                    </Wallet>
-
+                                            <DeleteButton onClick={() => (deleteEntry(w._id))}>x</DeleteButton>
+                                        </Wallet>
                                 )}
                                 <>
                                     <Balance>SALDO</Balance>
-                                    <BalanceValue value={Number(finalBalance.replace(',','.'))}>{finalBalance}</BalanceValue>
+                                    <BalanceValue value={Number(finalBalance.replace(',', '.'))}>{finalBalance}</BalanceValue>
                                 </>
                             </>
                             :
@@ -130,7 +129,7 @@ const ContainerWallet = styled.div`
     ::-webkit-scrollbar {
         width: 0px;
     }
-` 
+`
 
 const Wallet = styled.div`
     width: 326px;
@@ -183,7 +182,7 @@ const BalanceValue = styled.div`
     color: ${props => props.value >= 0 ? "#03AC00" : "#C70000"} ;
 `
 
-const EmptyText = styled.p`
+const EmptyText = styled.div`
     width: 326px;
     height: 446px;
     display: flex;

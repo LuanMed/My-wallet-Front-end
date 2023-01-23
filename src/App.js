@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import HomePage from "./pages/HomePage";
@@ -6,9 +6,9 @@ import IncomePage from "./pages/IncomePage";
 import ExpensePage from "./pages/ExpensePage";
 import { useState } from "react";
 import { UserInfoContext } from "./context/UserInfoContext";
-
 export default function App() {
   const [userInfo, setUserInfo] = useState({});
+  const id = useParams();
 
   return (
     <BrowserRouter>

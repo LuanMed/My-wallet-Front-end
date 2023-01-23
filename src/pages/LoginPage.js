@@ -19,8 +19,7 @@ export default function LoginPage() {
         axios.post(`${process.env.REACT_APP_API_URL}/logged`, body)
             .then(res => {
                 navigate('/');
-                setDisabled(false);           
-                console.log(res.data);
+                setDisabled(false);
                 setUserInfo(res.data);
                 navigate('/home');
             })
