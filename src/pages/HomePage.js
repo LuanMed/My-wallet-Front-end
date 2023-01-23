@@ -10,6 +10,8 @@ export default function HomePage() {
     const firstName = userInfo.name?.split(' ');
     const [wallet, setWallet] = useState(undefined);
     const [finalBalance, setFinalBalance] = useState(0);
+    const [deletedCounter, setDeletedCounter] = useState([]);
+
 
     const config = {
         headers: {
@@ -21,7 +23,8 @@ export default function HomePage() {
         if(!window.confirm("Quer deletar esse lançamento?")) return;
 
         axios.delete(`${process.env.REACT_APP_API_URL}/transactions/${id}`, config)
-        .then.catch(err => alert(err.response.data))
+        .then(res => setDeletedCounter([...deletedCounter, 1]))
+        .catch(err => alert(err.response.data))
     }
 
     useEffect(() => {
@@ -30,12 +33,11 @@ export default function HomePage() {
             .then(res => {
                 setWallet(res.data.transactions);
                 setFinalBalance(res.data.finalBalance);
-                console.log(res.data)
             })
             .catch(err => {
                 alert(err.response.data)
             });
-    }, [wallet])
+    }, [deletedCounter])
 
     return (
         <ContainerHome>
@@ -51,7 +53,7 @@ export default function HomePage() {
                         {wallet.length !== 0 ?
                             <>
                                 {wallet.map(w =>
-                                    <Wallet>
+                                    <Wallet key={w._id}>
                                             <Date>{w.date}</Date>
                                             <Title>{w.description}</Title>
                                             <Amount type={w.type}>{w.amount}</Amount>
