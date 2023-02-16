@@ -3,6 +3,7 @@ import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import { UserInfoContext } from "../context/UserInfoContext";
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function ExpensePage() {
     const [amount, setAmount] = useState("");
@@ -17,10 +18,10 @@ export default function ExpensePage() {
         }
     }
 
-    function addExpense (e) {
+    function addExpense(e) {
         e.preventDefault();
         setDisabled(true);
-        
+
         const body = {
             amount,
             description,
@@ -28,14 +29,14 @@ export default function ExpensePage() {
         }
 
         axios.post(`https://mywallet-api-jpnj.onrender.com/transactions`, body, config)
-        .then(res => {
-            navigate('/home');
-            setDisabled(false);
-        })
-        .catch(err => {
-            setDisabled(false);
-            alert(err.response.data);
-        })
+            .then(res => {
+                navigate('/home');
+                setDisabled(false);
+            })
+            .catch(err => {
+                setDisabled(false);
+                alert(err.response.data);
+            })
     }
 
     return (
@@ -64,7 +65,9 @@ export default function ExpensePage() {
                     required
                     disabled={disabled}
                 />
-                <button disabled={disabled} type="submit" >Salvar saída</button>
+                <button disabled={disabled} type="submit" >
+                    {!disabled ? 'Nova saída' : <ThreeDots color="#FFFFFF" width="70" />}
+                </button>
             </Form>
         </ContainerExpense>
     )
@@ -90,6 +93,9 @@ const ContainerExpense = styled.div`
         }
     }
     button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 20px;
         font-weight: 700;
         color: #FFFFFF;

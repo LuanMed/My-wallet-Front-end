@@ -3,6 +3,7 @@ import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import { UserInfoContext } from "../context/UserInfoContext";
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function IncomePage() {
     const [amount, setAmount] = useState("");
@@ -65,7 +66,9 @@ export default function IncomePage() {
                     required
                     disabled={disabled}
                 />
-                <button disabled={disabled} type="submit" >Salvar entrada</button>
+                <button disabled={disabled} type="submit" >
+                    {!disabled ? 'Nova entrada' : <ThreeDots color="#FFFFFF" width="70" />}
+                </button>
             </Form>
         </ContainerIncome>
     )
@@ -91,6 +94,9 @@ const ContainerIncome = styled.div`
         }
     }
     button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 20px;
         font-weight: 700;
         color: #FFFFFF;

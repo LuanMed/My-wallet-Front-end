@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { UserInfoContext } from "../context/UserInfoContext";
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -14,8 +15,8 @@ export default function LoginPage() {
     function login(e) {
         e.preventDefault();
         setDisabled(true);
-        const body = {email, password};
-        
+        const body = { email, password };
+
         axios.post(`https://mywallet-api-jpnj.onrender.com/logged`, body)
             .then(res => {
                 navigate('/');
@@ -55,7 +56,9 @@ export default function LoginPage() {
                     required
                     disabled={disabled}
                 />
-                <button disabled={disabled} type="submit" >Entrar</button>
+                <button disabled={disabled} type="submit" >
+                    {!disabled ? 'Entrar' : <ThreeDots color="#FFFFFF" width="70" />}
+                </button>
             </Form>
             <Link to={'/cadastro'}>
                 <p>Primeira vez? Cadastre-se!</p>
@@ -90,6 +93,9 @@ const ContainerLogin = styled.div`
         }
     }
     button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 20px;
         font-weight: 700;
         color: #FFFFFF;

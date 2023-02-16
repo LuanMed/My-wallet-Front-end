@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function ReginstrationPage() {
     const [name, setName] = useState("");
@@ -80,7 +81,9 @@ export default function ReginstrationPage() {
                     required
                     disabled={disabled}
                 />
-                <button disabled={disabled} type="submit" >Cadastrar</button>
+                <button disabled={disabled} type="submit" >
+                    {!disabled ? 'Cadastrar' : <ThreeDots color="#FFFFFF" width="70" />}
+                </button>
             </Form>
             <Link to={'/'}>
                 <p>Já tem uma conta? Entre agora!</p>
@@ -115,6 +118,9 @@ const ContainerRegistration = styled.div`
         }
     }
     button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 20px;
         font-weight: 700;
         color: #FFFFFF;
