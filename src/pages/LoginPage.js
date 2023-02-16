@@ -16,7 +16,7 @@ export default function LoginPage() {
         setDisabled(true);
         const body = {email, password};
         
-        axios.post(`${process.env.REACT_APP_API_URL}/logged`, body)
+        axios.post(`https://mywallet-api-jpnj.onrender.com/logged`, body)
             .then(res => {
                 navigate('/');
                 setDisabled(false);

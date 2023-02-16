@@ -22,14 +22,14 @@ export default function HomePage() {
     function deleteEntry(id) {
         if (!window.confirm("Quer deletar esse lançamento?")) return;
 
-        axios.delete(`${process.env.REACT_APP_API_URL}/transactions/${id}`, config)
+        axios.delete(`https://mywallet-api-jpnj.onrender.com/transactions/${id}`, config)
             .then(res => setDeletedCounter([...deletedCounter, 1]))
             .catch(err => alert(err.response.data))
     }
 
     useEffect(() => {
 
-        axios.get(`${process.env.REACT_APP_API_URL}/transactions`, config)
+        axios.get(`https://mywallet-api-jpnj.onrender.com/transactions`, config)
             .then(res => {
                 setWallet(res.data.transactions);
                 setFinalBalance(res.data.finalBalance);

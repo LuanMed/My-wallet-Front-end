@@ -27,7 +27,7 @@ export default function ExpensePage() {
             type: "expense"
         }
 
-        axios.post(`${process.env.REACT_APP_API_URL}/transactions`, body, config)
+        axios.post(`https://mywallet-api-jpnj.onrender.com/transactions`, body, config)
         .then(res => {
             navigate('/home');
             setDisabled(false);

@@ -23,7 +23,7 @@ export default function ReginstrationPage() {
             confirmPassword
         }
 
-        axios.post(`${process.env.REACT_APP_API_URL}/users`, body)
+        axios.post(`https://mywallet-api-jpnj.onrender.com/users`, body)
             .then(res => {
                 navigate('/');
                 setDisabled(false);
